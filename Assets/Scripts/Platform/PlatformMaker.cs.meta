@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 906c864b6a62a814bbb2e656d9d1964d
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - mCube: {fileID: 2612054996566797684, guid: a5e71fc01711f7c40af8d5c22ca03459, type: 3}
+  - mCubeT: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
