@@ -18,7 +18,8 @@ public class Skill_ShootBall : Skill
         if (GameManager.instance.IsWallTime())//벽이 다 내려올때까지 스킬밴
             return;
         // 바라보는 방향으로 공 생성
-        GameObject ball = Instantiate(ballPrefab, parent.gameObject.transform.position + new Vector3(0, -0.1f, 0), Quaternion.identity);
+        
+        GameObject ball = Instantiate(ballPrefab, parent.gameObject.transform.position - new Vector3(0, 0.35f, 0), Quaternion.identity);
 
         // ball 파워 정보 넘기기
         ball.GetComponent<Projectile>().Power = ballPower;
@@ -28,6 +29,7 @@ public class Skill_ShootBall : Skill
             ball.GetComponent<Projectile>().owner = Projectile.Owner.Player1;
         else if (parent.gameObject.tag == "Player2")
             ball.GetComponent<Projectile>().owner = Projectile.Owner.Player2;
+
 
         // 공 발사
         Rigidbody rb = ball.GetComponent<Rigidbody>();

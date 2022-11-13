@@ -14,14 +14,27 @@ public class Turret : MonoBehaviour
     private float bulletPower;      // 총알 파워
     private int mPlayer;            // 누가 설치했는지
 
+    [SerializeField] private GameObject Capsule;
+    [SerializeField] private GameObject Cylinder;
+
     public void SetTurret(int level, int player)
     {
         mTurretLevel = level;
         mPlayer = player;
         if(mPlayer == 1)
+        {
             mEnemy = GameManager.instance.GetPlayer(2);
+            Capsule.GetComponent<MeshRenderer>().material.color = new Color(255, 0, 0);
+            Cylinder.GetComponent<MeshRenderer>().material.color = new Color(255, 0, 0);
+        }
+            
         else if (mPlayer == 2)
+        {
             mEnemy = GameManager.instance.GetPlayer(1);
+            Capsule.GetComponent<MeshRenderer>().material.color = new Color(0,0,255);
+            Cylinder.GetComponent<MeshRenderer>().material.color = new Color(0,0,255);
+        }
+            
 
 
         switch(mTurretLevel)
@@ -29,20 +42,20 @@ public class Turret : MonoBehaviour
             case 1:
                 bulletCount = 5;
                 bulletShootCycle = 1;
-                bulletPower = 150;
+                bulletPower = 3;
                 bulletSpeed = 10;
-            break;
+                break;
 
             case 2:
                 bulletCount = 8;
                 bulletShootCycle = 0.5f;
-                bulletPower = 200;
+                bulletPower = 6;
                 bulletSpeed = 12.5f;
-            break;
+                break;
 
             default:
                 Debug.Log("ERROR: Turret.cs");
-            break;
+                break;
         }
 
     }

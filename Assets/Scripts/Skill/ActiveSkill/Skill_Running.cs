@@ -27,16 +27,25 @@ public class Skill_Running : Skill
         originalSize = parent.transform.localScale;
         parent.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
 
+        parent.GetComponent<Rigidbody>().mass = 5;
+
         PlayOccupyParticle(Color.white, parent);
     }
 
 
     public override void DeActivate(GameObject parent)
     {
+        if (originalSize == Vector3.zero)
+            originalSize = new Vector3(0.25f, 0.25f, 0.25f);
+        if (originalSpeed == 0)
+            originalSpeed = 3;
+        
         PlayerMovement playerMovement = parent.GetComponent<PlayerMovement>();
 
         playerMovement.moveSpeed = originalSpeed;
         parent.transform.localScale = originalSize;
+
+        parent.GetComponent<Rigidbody>().mass = 1;
     }
 
     private void PlayOccupyParticle(Color color, GameObject parent)

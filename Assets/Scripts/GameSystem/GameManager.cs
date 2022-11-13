@@ -168,6 +168,7 @@ public class GameManager : MonoBehaviour
             mPlayer1SkillHolder = player1.GetComponent<SkillHolder>();//스킬홀더 레퍼런스 가져오기
             mPlayer1SkillHolder.mActiveSkillKey = mPlayer1ActiveSkillKey; // 플레이어1 스킬 키 지정
             mPlayer1SkillHolder.animalType = player1Index; // 동물 타입 지정
+            player1.transform.GetChild(0).GetChild(0).gameObject.SetActive(true); // 1P text 띄우기
         }
         {//플레이어2 생성
             player2 = Instantiate(mPlayerPrefabs[player2Index], mPlayer2InitPosition, Quaternion.identity);
@@ -178,6 +179,7 @@ public class GameManager : MonoBehaviour
             mPlayer2SkillHolder = player2.GetComponent<SkillHolder>();//스킬홀더 레퍼런스 가져오기
             mPlayer2SkillHolder.mActiveSkillKey = mPlayer2ActiveSKillKey; // 플레이어2 스킬 키 지정
             mPlayer2SkillHolder.animalType = player2Index;
+            player2.transform.GetChild(0).GetChild(1).gameObject.SetActive(true); // 2P text 띄우기
         }
         {//초반 벽 생성
             mStartWall1 = Instantiate(mStartWall, mPlayer1InitPosition, Quaternion.identity);

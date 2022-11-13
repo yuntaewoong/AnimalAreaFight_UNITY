@@ -13,9 +13,14 @@ public class Projectile : MonoBehaviour
 
     public float Power { get; set; } // 투사체 파워
 
+
     void Start()
     {
         Destroy(gameObject, 2f);
+    }
+
+    void Update()
+    {
     }
 
 

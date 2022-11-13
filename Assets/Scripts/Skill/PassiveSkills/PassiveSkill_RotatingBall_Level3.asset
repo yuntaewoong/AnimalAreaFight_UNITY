@@ -16,3 +16,6 @@ MonoBehaviour:
   mSkillLevel: 3
   mBallPrefab: {fileID: 5562883579931710674, guid: 3a0366d0b0fe1924b88cdf574d314e71, type: 3}
   mKnockBackPower: 400
+  mRadius: 1
+  mRotationSpeed: 600
+  mBallScale: 1

@@ -15,6 +15,7 @@ MonoBehaviour:
   name: ShootBall
   cooldownTime: 2
   activeTime: 1
-  ballPrefab: {fileID: 5562883579931710674, guid: 973afc12b57afcc4d85d80f7f9ca1bdc, type: 3}
+  skillType: 0
+  ballPrefab: {fileID: 7003447207425742431, guid: 47b169e536da0684a8e2e185c0ea8e3a, type: 3}
   ballSpeed: 13
-  ballPower: 200
+  ballPower: 3

@@ -5,12 +5,24 @@ using static UnityEngine.GraphicsBuffer;
 
 public class RotatingBall : MonoBehaviour
 {
-    [SerializeField] private float mRotationSpeed;//회전 속도
-    [SerializeField] private Vector3 mRadiusVector;//회전 반경
     [SerializeField] private float mBallHeight;//ball의 y높이
+    private float mRotationSpeed;//회전 속도
+    private Vector3 mRadiusVector;//회전 반경
+
     private Transform mParentTransform;//부모 트랜스폼
     private float mRotatingValue = 0.0f;//회전값(360:1바퀴)
     private float mKnockBackPower;
+
+
+    public void SetRotationSpeed(float rotationSpeed)
+    {
+        mRotationSpeed = rotationSpeed;
+    }
+    public void SetRadius(float radius)
+    {
+        mRadiusVector = new Vector3(radius, 0, 0);
+    }
+
     public void SetParentTransform(Transform transform)
     {
         mParentTransform = transform;

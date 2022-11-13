@@ -45,6 +45,22 @@ public class Player : MonoBehaviour
         return mPlayerNumber;
     }
 
+    public void GoAway(Vector3 otherPosition, float power, bool goUp = true)
+    // 상대로부터 멀리 플레이어 날리는 함수 (상대 위치, 파워, 좀 더 위쪽으로 날릴건지)
+    {
+        Vector3 d = gameObject.transform.position - otherPosition; // 정규방향벡터 설정
+        
+        if (goUp)
+            d = new Vector3(d.x, 0.5f, d.z).normalized;
+        else if (!goUp)
+            d = new Vector3(d.x, 0.1f, d.z).normalized;
+
+        Debug.Log("d: " + d);
+        
+        rb.AddForce(d * power, ForceMode.Impulse);
+
+        Debug.Log("boom!!: " + gameObject.tag);
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -54,10 +70,7 @@ public class Player : MonoBehaviour
             
             if (ball.owner.ToString() != this.tag) // 접촉한 플레이어가 Ball 던진 사람이 아니라면
             {
-                // 정규방향벡터 설정 (넉백방향)
-                Vector3 d = (gameObject.transform.position - other.transform.position).normalized;
-
-                rb.AddForce(d * ball.Power);
+                GoAway(other.transform.position, ball.Power, false);
             }
         }
 
@@ -65,26 +78,14 @@ public class Player : MonoBehaviour
         {
             RotatingBall rotatingBall = other.GetComponent<RotatingBall>();
             // 정규방향벡터 설정 (넉백방향)
-            Vector3 d = (gameObject.transform.position - other.transform.position).normalized;
-            rb.AddForce(d * rotatingBall.GetKnockBackPower());
+
+            GoAway(other.transform.position, rotatingBall.GetKnockBackPower(), false);
         }
 
-        if (other.tag == "Player1" || other.tag == "Player2") // 접촉한 오브젝트가 플레이어라면
-        {
-            var otherPlayerSkillHolder = other.GetComponent<SkillHolder>();
-            if (otherPlayerSkillHolder.animalType == 2 && otherPlayerSkillHolder.isActive)
-            // 접촉한 상대가 cow이고 스킬 사용중이라면
-            {
-                // 정규방향벡터 설정 (넉백방향)
-                Vector3 d = (gameObject.transform.position - other.transform.position).normalized;
-
-                rb.AddForce(d * otherPlayerSkillHolder.Power, ForceMode.Impulse);
-            }
-        }
     }
 
-    void OnCollisionEnter(Collision other)
-    {
-        
-    }
+    
+    
+
+    
 }

@@ -49,6 +49,8 @@ public class SkillHolder : MonoBehaviour
     {
         for (int i = 0; i < 3; i++)
             mSkillLevels[i] = 0;
+
+        isActive = false;
     }
     private void Update()
     {
@@ -57,12 +59,12 @@ public class SkillHolder : MonoBehaviour
             case ActiveSkillState.ready: // ready 상태일때
                 if (Input.GetKeyDown(mActiveSkillKey))
                 {
-                    mActiveSkill.Activate(gameObject);             // 액티브 스킬 발동
-                    mActiveSkillState = ActiveSkillState.active; // 스킬 시전 상태로 전환
-                    mActiveTime = mActiveSkill.activeTime;            // 액티브 스킬 시전 시간 정보 갖고오기
+                    mActiveSkill.Activate(gameObject);              // 액티브 스킬 발동
+                    mActiveSkillState = ActiveSkillState.active;    // 스킬 시전 상태로 전환
+                    mActiveTime = mActiveSkill.activeTime;          // 액티브 스킬 시전 시간 정보 갖고오기
                 }
 
-            break;
+                break;
             case ActiveSkillState.active:
                 // 스킬 시전 시간 지나면 쿨다운 타임으로 전환
                 isActive = true;
@@ -81,7 +83,7 @@ public class SkillHolder : MonoBehaviour
                         mActiveSkill.DeActivate(gameObject);                 // 스킬 해제
                 }
 
-            break;
+                break;
             case ActiveSkillState.cooldown:
                 // 스킬 쿨타임 지나면 ready 상태로 전환
                 if (mCooldownTime > 0)
@@ -96,7 +98,7 @@ public class SkillHolder : MonoBehaviour
                     else if (gameObject.tag == "Player2")
                         Debug.Log("player2 skill ready");
                 }
-            break;
+                break;
         }
     
     }
