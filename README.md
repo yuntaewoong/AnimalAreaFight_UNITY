@@ -3,12 +3,13 @@
 (개발중인 스크린샷)
 
 # Introduction
-- 게임 제목: (미정)
+- 게임 제목: 가축대전
 - 팀명: 백수의 왕
 - 팀원:
     * [문석호(팀장)](https://github.com/khumsh)
     * [윤태웅](https://github.com/yuntaewoong)
     * [강수한](https://github.com/tngksdlstk12)
+- 개발기간: 22'10'01 ~ 22'11'22
 - 개발도구: Unity(2021.3.11f1) + C#
 - 협업도구: Perforce + (AWS EC2서버)
 
