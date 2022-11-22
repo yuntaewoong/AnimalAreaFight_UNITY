@@ -18,6 +18,8 @@ public class WaitingUI : MonoBehaviour
     [SerializeField] private RectTransform mPlayer1Bar;
     [SerializeField] private RectTransform mPlayer2Bar;
     [SerializeField] private float mScoreFontSize = 160;
+
+    private AudioSource mWaitingSound;
     private Vector2 mPlayer1BarOffsetMaxInitialValue;//초기 offsetMax값 저장용
     private Vector2 mPlayer2BarOffsetMinInitialValue;//초기 offsetMin값 저장용
 
@@ -33,11 +35,11 @@ public class WaitingUI : MonoBehaviour
         float bar1Width = mPlayer1Bar.rect.width;
         float bar2Width = mPlayer2Bar.rect.width;
         float timeInterval = 0.016f;//시간간격(60프레임기준)
-        float gageSpeed = 3.0f;//게이지 차오르는 스피드
-
+        float gageSpeed = 7.0f;//게이지 차오르는 스피드
+        mWaitingSound.Play();
         while (true)
         {
-            if((int)iteratorScore < loserScore)//패배자의 점수까지는 같이 증가
+            if ((int)iteratorScore < loserScore)//패배자의 점수까지는 같이 증가
             {
                 mPlayer1ScoreText.SetText(((int)iteratorScore).ToString());
                 mPlayer2ScoreText.SetText(((int)iteratorScore).ToString());
@@ -47,7 +49,9 @@ public class WaitingUI : MonoBehaviour
                 {
                     mPlayer1ScoreText.SetText(((int)iteratorScore + 1).ToString());
                     mPlayer2ScoreText.SetText(((int)iteratorScore + 1).ToString());
+                    mWaitingSound.Pause();
                     yield return new WaitForSeconds(3.0f);
+                    mWaitingSound.Play();
                     /*
                      * 무승부 예외처리
                      */
@@ -55,7 +59,7 @@ public class WaitingUI : MonoBehaviour
                     {
                         mWinnerText.gameObject.SetActive(true);
                         mWinnerText.SetText("Draw");
-                        yield return new WaitForSeconds(3.0f);//3.0초 딜레이
+                        yield return new WaitForSeconds(2.0f);//2.0초 딜레이
                         GameManager.instance.ChangeStateWaitingToSkillSelection();//스킬 선택상태로 전환
                         yield break;
                     }
@@ -93,9 +97,12 @@ public class WaitingUI : MonoBehaviour
                     mPlayer2Bar.offsetMin = new Vector2(bar2Width - iteratorScore / (float)sumOfPlayer1ScorePlayer2Score * bar2Width, 0);
                     mWinnerText.SetText("Winner Is Blue");
                 }
-                yield return new WaitForSeconds(3.0f);//3.0초 딜레이
-
-                GameManager.instance.ChangeStateWaitingToSkillSelection();//스킬 선택상태로 전환
+                mWaitingSound.Pause();
+                yield return new WaitForSeconds(2.0f);//2.0초 딜레이
+                if (GameManager.instance.IsGameEnd())//게임이 다 끝나면
+                    GameManager.instance.ChangeStateWaitingToEnd();//종료 상태로 전환
+                else//아니면
+                    GameManager.instance.ChangeStateWaitingToSkillSelection();//스킬 선택상태로 전환
                 yield break;
             }
             iteratorScore = iteratorScore + timeInterval* gageSpeed;
@@ -106,7 +113,7 @@ public class WaitingUI : MonoBehaviour
     {
         mPlayer1BarOffsetMaxInitialValue = new Vector2(mPlayer1Bar.offsetMax.x, mPlayer1Bar.offsetMax.y);
         mPlayer2BarOffsetMinInitialValue = new Vector2(mPlayer2Bar.offsetMin.x, mPlayer2Bar.offsetMin.y);
-
+        mWaitingSound = GetComponent<AudioSource>();
     }
     private void OnEnable()//평상시엔 UnEnable되어있다가 Battle->Waiting으로 게임 상태가 전이될때 호출
     {

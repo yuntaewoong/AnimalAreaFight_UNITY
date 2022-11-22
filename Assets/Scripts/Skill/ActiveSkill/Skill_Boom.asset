@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Skill_Boom
   m_EditorClassIdentifier: 
   name: Boom
-  cooldownTime: 2
-  activeTime: 0.5
+  cooldownTime: 5
+  activeTime: 0
   skillType: 0
-  skillPower: 3.5
+  skillPower: 4.5

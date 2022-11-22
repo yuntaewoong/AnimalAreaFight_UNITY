@@ -1550,6 +1550,8 @@ GameObject:
   - component: {fileID: 2047032106084790149}
   - component: {fileID: 323157405334960928}
   - component: {fileID: 7849214826554067669}
+  - component: {fileID: -2802247881430405328}
+  - component: {fileID: 4405046356147987418}
   m_Layer: 0
   m_Name: CowClone
   m_TagString: Player2
@@ -1635,6 +1637,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9cd821ca8babd745bc39a0b0b6140b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-2802247881430405328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047032105564440143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f1d034993999764488c00174aa85e0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4405046356147987418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047032105564440143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6979a0e0f053bb0429941e9a3a2cfcb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 3
 --- !u!1 &2047032105564440145
 GameObject:
   m_ObjectHideFlags: 0

@@ -31,6 +31,12 @@ public class SkillSelectionUI : MonoBehaviour
     [SerializeField] private GameObject[] mRedRectangles;
     [SerializeField] private PassiveSkillOptions[] mPassiveSkillSelectionOptions = new PassiveSkillOptions[3];//선택할수 있는 패시브 스킬 옵션
     [SerializeField] private TextMeshProUGUI[] mSkillTexts = new TextMeshProUGUI[3];//스킬선택창 텍스트레퍼런스
+    [SerializeField] private TextMeshProUGUI mSkillInfoText;
+    [TextArea]
+    [SerializeField] private string[] mCharacterInfoTexts;
+
+    private AudioSource mCursorSound;
+
     private int mSelectingIndex = 0;//선택중인 스킬 Index
     private bool mSelected = false;//이 UI가 Enable되어있는중에 선택입력이 입력되면 true
     private SelectingPlayer mSelectingPlayer = SelectingPlayer.Player1;
@@ -53,6 +59,7 @@ public class SkillSelectionUI : MonoBehaviour
         mSelected = false;
         mSelectingIndex = 0;
         SetSelecter();//조작하는 플레이어 세팅
+        mCursorSound = GetComponent<AudioSource>();
     }
     private void SetSelecter()//스킬선택UI을 조작할 Player세팅
     {
@@ -86,21 +93,39 @@ public class SkillSelectionUI : MonoBehaviour
     {
         if(mSelectingPlayer == SelectingPlayer.Player1)//플레이어1 조작처리
         {
-            if(Input.GetKeyDown(player1_LeftKey))//왼쪽
-                mSelectingIndex = (mSelectingIndex > 0)? mSelectingIndex-1: mSelectingIndex;
+            if (Input.GetKeyDown(player1_LeftKey))//왼쪽
+            {
+                mCursorSound.Play();
+                mSelectingIndex = (mSelectingIndex > 0) ? mSelectingIndex - 1 : mSelectingIndex;
+            }
             if (Input.GetKeyDown(player1_RightKey))//오른쪽
+            {
+                mCursorSound.Play();
                 mSelectingIndex = (mSelectingIndex < 2) ? mSelectingIndex + 1 : mSelectingIndex;
+            }
             if (Input.GetKeyDown(player1_SelectionKey))//스킬 선택
+            {
+                mCursorSound.Play();
                 OnSelect();
+            }
         }
         else//플레이어2조작처리
         {
             if (Input.GetKeyDown(player2_LeftKey))//왼쪽
+            {
+                mCursorSound.Play();
                 mSelectingIndex = (mSelectingIndex > 0) ? mSelectingIndex - 1 : mSelectingIndex;
+            }
             if (Input.GetKeyDown(player2_RightKey))//오른쪽
+            {
+                mCursorSound.Play();
                 mSelectingIndex = (mSelectingIndex < 2) ? mSelectingIndex + 1 : mSelectingIndex;
+            }
             if (Input.GetKeyDown(player2_SelectionKey))//스킬 선택
+            {
+                mCursorSound.Play();
                 OnSelect();
+            }
         }
     }
     private void OnSelect()//스킬이 선택되었을때 실행
@@ -156,6 +181,7 @@ public class SkillSelectionUI : MonoBehaviour
             for (int i = 0; i < 3; i++)
                 mSkillTexts[i].SetText(mPassiveSkillSelectionOptions[i].map[player2SkillHolder.GetSkillLevel(i)].mName);
         }
+        mSkillInfoText.SetText(mCharacterInfoTexts[mSelectingIndex]);
 
     }
 }

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8038896c8dc6d6b40a07f5847d489e77, type: 3}
   m_Name: PassiveSkill_BuildTurret_Level1
   m_EditorClassIdentifier: 
-  mName: "\uD130\uB81B \uC124\uCE58 lv.1"
+  mName: "\uD130\uB81B \uC124\uCE58 Lv.1"
   mSkillLevel: 1
   mTurretPrefab: {fileID: 2753229485973928630, guid: a0f12caac2d1f3e42bd7074e4386cdb9, type: 3}

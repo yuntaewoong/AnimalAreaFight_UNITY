@@ -29,6 +29,11 @@ public class PlayerMovement : MonoBehaviour
     // 플레이어 이동
     private void Move()
     {
+        if (GameManager.instance.GetGameState() != GameState.Battle)
+        {
+            anim.SetBool("run", false);
+            return;
+        }
         rb.MovePosition(rb.position + playerInput.moveDirection * moveSpeed * Time.fixedDeltaTime);
         anim.SetBool("run", playerInput.moving);
     }

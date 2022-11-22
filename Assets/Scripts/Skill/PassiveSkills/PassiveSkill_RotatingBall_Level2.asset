@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73d5260284b00854c90d3999229688d3, type: 3}
   m_Name: PassiveSkill_RotatingBall_Level2
   m_EditorClassIdentifier: 
-  mName: "\uD68C\uC804\uD558\uB294 \uAD6C\uCCB4 lv.2"
+  mName: "\uD68C\uC804\uD558\uB294 \uAD6C\uCCB4 Lv.2"
   mSkillLevel: 2
   mBallPrefab: {fileID: 5562883579931710674, guid: 3a0366d0b0fe1924b88cdf574d314e71, type: 3}
-  mKnockBackPower: 300
+  mKnockBackPower: 3.5
   mRadius: 1
-  mRotationSpeed: 600
+  mRotationSpeed: 300
   mBallScale: 1

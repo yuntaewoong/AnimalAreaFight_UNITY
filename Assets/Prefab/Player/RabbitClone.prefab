@@ -682,6 +682,8 @@ GameObject:
   - component: {fileID: 7691992467318022508}
   - component: {fileID: 5619365729077103492}
   - component: {fileID: -3258479568723959712}
+  - component: {fileID: -1325314422070562444}
+  - component: {fileID: -386942749253076181}
   m_Layer: 0
   m_Name: RabbitClone
   m_TagString: Untagged
@@ -767,6 +769,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9cd821ca8babd745bc39a0b0b6140b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-1325314422070562444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5084743100335671613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f1d034993999764488c00174aa85e0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-386942749253076181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5084743100335671613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6979a0e0f053bb0429941e9a3a2cfcb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 3
 --- !u!1 &5084743100335671615
 GameObject:
   m_ObjectHideFlags: 0

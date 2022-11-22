@@ -12,10 +12,13 @@ enum PlayersOnBlock//발판에 올라와있는 Player들
 
 public class Platform : MonoBehaviour
 {
+    [SerializeField] private int mFeverMultiplyer = 10;
+    [SerializeField] private float mFeverTime = 15.0f;
     [SerializeField] private float mColorTime=1.5f;
     [SerializeField] private float mPermPenaltyTime = 1.5f; //영구땅 뺏을 때 배수
     [SerializeField] private GameObject mPlatform;
     [SerializeField] private PlatformMaker mPlatformMaker;
+    [SerializeField] private float mFeverBingoPenalty = 6.0f;
     private Platform mTempPlatform;
     
     private float mPlayer1Point = 0f;
@@ -36,7 +39,19 @@ public class Platform : MonoBehaviour
     [SerializeField] private Color Temp1Color = new Color(0.8f, 0.3f, 0.0f);
     [SerializeField] private Color Temp2Color = new Color(0.0f, 0.3f, 0.8f);
     [SerializeField] private Color Perm1Color = new Color(1.0f, 0.0f, 0.0f);
-    [SerializeField] private Color Perm2Color = new Color (0.0f, 0.0f, 1.0f);    
+    [SerializeField] private Color Perm2Color = new Color (0.0f, 0.0f, 1.0f);
+
+
+    public void SetHasPlayer(bool bHasPlayer)
+    {
+        mHasPlayer1 = bHasPlayer;
+        mHasPlayer2 = bHasPlayer;
+    }
+
+    private void PlayPlatformSound()
+    {
+        mPlatform.GetComponent<AudioSource>().Play();
+    }
 
     private void  PlatformInitialization()
     {
@@ -51,6 +66,7 @@ public class Platform : MonoBehaviour
         ParticleSystem.MainModule ma = ps.main;
         ma.startColor = color;
         ps.Play();
+        PlayPlatformSound();
     }
     private void CheckPlayer()
     {
@@ -70,7 +86,15 @@ public class Platform : MonoBehaviour
             else if (mPlatformMaker.GetBingoMap(mPlatformX, mPlatformZ) == PlatformMaker.PlatformOwner.Perm2)
             //  발판 현재 주인이 영구 플레이어2면
             {
-                InteractWithPlayer1(mPermPenaltyTime);
+                if (GameManager.instance.GetRemainingTime() < mFeverTime)
+                {
+                    InteractWithPlayer1(mFeverBingoPenalty);
+                }
+                else
+                {
+                    InteractWithPlayer1(mPermPenaltyTime);
+                }
+                    
                
             }
         }
@@ -89,7 +113,14 @@ public class Platform : MonoBehaviour
             else if (mPlatformMaker.GetBingoMap(mPlatformX, mPlatformZ) == PlatformMaker.PlatformOwner.Perm1)
             //  발판 현재 주인이 영구 플레이어1면
             {
-                InteractWithPlayer2(mPermPenaltyTime);
+                if (GameManager.instance.GetRemainingTime() < mFeverTime)
+                {
+                    InteractWithPlayer2(mFeverBingoPenalty);
+                }
+                else
+                {
+                    InteractWithPlayer2(mPermPenaltyTime);
+                }
             }
         }
     }
@@ -256,7 +287,15 @@ public class Platform : MonoBehaviour
             return;
         }
         
-        mPlayer1Point += Time.deltaTime / (mColorTime* penaltyTime);
+        if(GameManager.instance.GetRemainingTime() < mFeverTime)
+        {
+            mPlayer1Point += Time.deltaTime  / (mColorTime * penaltyTime) *mFeverMultiplyer;
+        }
+        else
+        {
+            mPlayer1Point += Time.deltaTime / (mColorTime * penaltyTime) ;
+        }
+        
         
         if (mPlatformMaker.GetBingoMap(mPlatformX, mPlatformZ) == PlatformMaker.PlatformOwner.Neutral)//현재 중립 플랫폼이면
         {
@@ -299,8 +338,17 @@ public class Platform : MonoBehaviour
             mPlayer2Point = 1.0f;
             return;
         }
+        if (GameManager.instance.GetRemainingTime() < mFeverTime)
+        {
+            mPlayer2Point += Time.deltaTime / (mColorTime * penaltyTime) * mFeverMultiplyer;
+        }
+        else
+        {
+            mPlayer2Point += Time.deltaTime / (mColorTime * penaltyTime);
+        }
 
-        mPlayer2Point += Time.deltaTime / (mColorTime * penaltyTime);
+
+
         if (mPlatformMaker.GetBingoMap(mPlatformX, mPlatformZ) == PlatformMaker.PlatformOwner.Neutral)//현재 중립 플랫폼이면
         {
             mPlatform.GetComponent<MeshRenderer>().material.color = Color.Lerp(NeutralColor, Temp2Color, mPlayer2Point);

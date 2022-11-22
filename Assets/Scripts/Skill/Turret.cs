@@ -42,14 +42,14 @@ public class Turret : MonoBehaviour
             case 1:
                 bulletCount = 5;
                 bulletShootCycle = 1;
-                bulletPower = 3;
+                bulletPower = 5;
                 bulletSpeed = 10;
                 break;
 
             case 2:
                 bulletCount = 8;
                 bulletShootCycle = 0.5f;
-                bulletPower = 6;
+                bulletPower = 5;
                 bulletSpeed = 12.5f;
                 break;
 

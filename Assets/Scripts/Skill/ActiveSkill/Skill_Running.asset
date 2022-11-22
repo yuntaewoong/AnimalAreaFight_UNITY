@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Skill_Running
   m_EditorClassIdentifier: 
   name: Running
-  cooldownTime: 2
+  cooldownTime: 10
   activeTime: 3
   skillType: 1
   runningSpeed: 7

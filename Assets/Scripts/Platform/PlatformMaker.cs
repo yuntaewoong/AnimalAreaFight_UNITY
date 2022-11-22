@@ -23,6 +23,7 @@ public class PlatformMaker : MonoBehaviour
             for(int j =0; j< mPlatformCount; j++)
             {
                 mBingoMap[i, j] = PlatformOwner.Neutral;
+                //mPlatformList[i, j].GetComponentInChildren<Platform>().SetHasPlayer(false);
                 mPlatformList[i, j].GetComponentInChildren<Platform>().ClearPlatform();
             }
         }

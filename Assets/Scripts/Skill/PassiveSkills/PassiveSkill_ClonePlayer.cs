@@ -13,13 +13,37 @@ public class PassiveSkill_ClonePlayer : PassiveSkill
         int animalType = parent.GetComponent<SkillHolder>().animalType;
         for (int i = 0; i < mSkillLevel; i++)
         {
-            mGameObjects.Add(
+            if(i == 0)
+            {
+                mGameObjects.Add(
                 Instantiate(
-                    mClonePlayerPrefabs[animalType],
-                    parent.gameObject.transform.position + new Vector3(0.0f, 0.0f, (i+1)* mDistanceBetweenClone),
-                    Quaternion.identity
-                )
-            );
+                        mClonePlayerPrefabs[animalType],
+                        parent.gameObject.transform.position + new Vector3(0.0f, 0.0f, (4) * mDistanceBetweenClone),
+                        Quaternion.identity
+                    )
+                );
+            }
+            else if(i == 1)
+            {
+                mGameObjects.Add(
+                Instantiate(
+                        mClonePlayerPrefabs[animalType],
+                        parent.gameObject.transform.position + new Vector3(0.0f, 0.0f, (2) * mDistanceBetweenClone),
+                        Quaternion.identity
+                    )
+                );
+            }
+            else
+            {
+                mGameObjects.Add(
+                Instantiate(
+                        mClonePlayerPrefabs[animalType],
+                        parent.gameObject.transform.position + new Vector3(0.0f, 0.0f, (i + 1) * mDistanceBetweenClone),
+                        Quaternion.identity
+                    )
+                );
+            }
+            
             mGameObjects[mGameObjects.Count - 1].GetComponent<PlayerClone>().SetActualPlayer(parent);//원본 설정
             mGameObjects[mGameObjects.Count - 1].tag = parent.tag;//태그 카피
         }

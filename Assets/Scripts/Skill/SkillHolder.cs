@@ -1,23 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SkillHolder : MonoBehaviour
 {
     [SerializeField] private Skill mActiveSkill;
     [SerializeField] private List<PassiveSkill> mPassiveSkills;//패시브 스킬배열
+    
     private int[] mSkillLevels = new int[3];
     private float mCooldownTime;
     private float mActiveTime;
     enum ActiveSkillState { ready, active, cooldown } // 액티브 스킬 상태 (사용가능, 사용중, 쿨타임)
     private ActiveSkillState mActiveSkillState = ActiveSkillState.ready;
+    private AudioSource mSkillAudio;
 
 
-  
+    public Image skillCooldownImage;
     public int animalType; // 동물 타입 (0:토끼, 1:거북이, 2:소)
     public KeyCode mActiveSkillKey; // 액티브 스킬 시전 키
     public bool isActive; // 현재 active 상태인지
     public float Power { get; set; }
+    public Transform mCooldownUI;
     
     public int GetSkillLevel(int skillIndex)
     {
@@ -47,21 +51,38 @@ public class SkillHolder : MonoBehaviour
     }
     private void Start()
     {
+        mSkillAudio = GetComponent<AudioSource>();
         for (int i = 0; i < 3; i++)
             mSkillLevels[i] = 0;
 
         isActive = false;
+
+        mActiveSkillState = ActiveSkillState.ready;
+
+        mCooldownUI.GetComponent<Image>().fillAmount = 0;
+
+        skillCooldownImage.fillAmount = 1;
+        if (gameObject.tag == "Player1")
+            skillCooldownImage.color = Color.red;
+        else if (gameObject.tag == "Player2")
+            skillCooldownImage.color = Color.blue;
     }
     private void Update()
     {
         switch(mActiveSkillState)
         {
             case ActiveSkillState.ready: // ready 상태일때
+                mCooldownUI.GetComponent<Image>().fillAmount = 1;
+
                 if (Input.GetKeyDown(mActiveSkillKey))
                 {
-                    mActiveSkill.Activate(gameObject);              // 액티브 스킬 발동
-                    mActiveSkillState = ActiveSkillState.active;    // 스킬 시전 상태로 전환
-                    mActiveTime = mActiveSkill.activeTime;          // 액티브 스킬 시전 시간 정보 갖고오기
+                    if (!GameManager.instance.IsWallTime())
+                    {
+                        mSkillAudio.Play();
+                        mActiveSkill.Activate(gameObject);              // 액티브 스킬 발동
+                        mActiveSkillState = ActiveSkillState.active;    // 스킬 시전 상태로 전환
+                        mActiveTime = mActiveSkill.activeTime;          // 액티브 스킬 시전 시간 정보 갖고오기
+                    }
                 }
 
                 break;
@@ -72,6 +93,9 @@ public class SkillHolder : MonoBehaviour
                 if (mActiveTime > 0)
                 {
                     mActiveTime -= Time.deltaTime;
+
+                    skillCooldownImage.fillAmount = 0;
+                    mCooldownUI.GetComponent<Image>().fillAmount = 1;
                 }
                 else
                 {
@@ -79,6 +103,9 @@ public class SkillHolder : MonoBehaviour
                     mActiveSkillState = ActiveSkillState.cooldown;           // 쿨타운 상태로 전환
                     mCooldownTime = mActiveSkill.cooldownTime;               // 쿨다운 시간 정보 갖고오기
                     
+                    skillCooldownImage.fillAmount = 0;
+                    mCooldownUI.GetComponent<Image>().fillAmount = 0;
+
                     if(mActiveSkill.skillType == Skill.SkillType.Continuous) // 지속성 스킬이라면
                         mActiveSkill.DeActivate(gameObject);                 // 스킬 해제
                 }
@@ -89,10 +116,22 @@ public class SkillHolder : MonoBehaviour
                 if (mCooldownTime > 0)
                 {
                     mCooldownTime -= Time.deltaTime;
+
+                    skillCooldownImage.fillAmount += 1 / mCooldownTime * Time.deltaTime;
+                    mCooldownUI.GetComponent<Image>().fillAmount += 1 / mCooldownTime * Time.deltaTime;
+
+                    if (skillCooldownImage.fillAmount >= 1)
+                        skillCooldownImage.fillAmount = 1;
+
+                    if (mCooldownUI.GetComponent<Image>().fillAmount >= 1)
+                        mCooldownUI.GetComponent<Image>().fillAmount = 1;
                 }
                 else
                 {
                     mActiveSkillState = ActiveSkillState.ready;
+                    skillCooldownImage.fillAmount = 1;
+                    mCooldownUI.GetComponent<Image>().fillAmount = 1;
+
                     if(gameObject.tag == "Player1")
                         Debug.Log("player1 skill ready");
                     else if (gameObject.tag == "Player2")

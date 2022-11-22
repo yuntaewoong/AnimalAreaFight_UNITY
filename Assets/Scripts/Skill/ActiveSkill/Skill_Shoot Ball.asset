@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Skill_Shoot Ball
   m_EditorClassIdentifier: 
   name: ShootBall
-  cooldownTime: 2
-  activeTime: 1
+  cooldownTime: 4
+  activeTime: 0
   skillType: 0
   ballPrefab: {fileID: 7003447207425742431, guid: 47b169e536da0684a8e2e185c0ea8e3a, type: 3}
   ballSpeed: 13

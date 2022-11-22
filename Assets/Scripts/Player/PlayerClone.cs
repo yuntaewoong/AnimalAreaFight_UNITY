@@ -28,6 +28,10 @@ public class PlayerClone : MonoBehaviour
     private void Update()
     {
         UpdateCloneTransform();
+        if(GameManager.instance.GetGameState() == GameState.Battle && !GameManager.instance.IsWallTime())
+        {
+            this.enabled = false;
+        }
     }
 
 }

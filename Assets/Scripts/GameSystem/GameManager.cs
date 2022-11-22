@@ -1,47 +1,55 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-
-public enum GameState//°ÔÀÓÀÇ »óÅÂ¸¦ ³ªÅ¸³»´Â Enum
+public enum GameState//ê²Œì„ì˜ ìƒíƒœë¥¼ ë‚˜íƒ€ë‚´ëŠ” Enum
 {
-    CharacterSelection,//°ÔÀÓ¿¡¼­ »ç¿ëÇÒ Ä³¸¯ÅÍ¸¦ Á¤ÇÏ´Â »óÅÂ
-    Battle,//°ÔÀÓÀ» ÇÃ·¹ÀÌÇÏ´Â »óÅÂ(ÀÌ¶§¿¡¸¸ mPerGameTimer°¡ ÀÛµ¿ÇÔ)
-    Waiting,//Waiting»óÅÂ, ÇÃ·¹ÀÌ¾îÀÇ inputÀ» ¹ŞÁö¾Ê°í °ÔÀÓ»óÅÂ¸¦ Ã³¸®ÇÏ´Â °úÁ¤(Á¡¼ö ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ¶ó´ø°¡)
-    SkillSelection,//SkillÀ» °í¸£´Â »óÅÂ
-    End//½ÂºÎ°¡ °áÁ¤µÇ¾î ÃÖÁ¾ È­¸éÀ» º¸¿©ÁÖ´Â »óÅÂ
+    Start,//ê²Œì„ ì‹œì‘ UIë‚˜ì˜¤ëŠ” ìƒíƒœ
+    CharacterSelection,//ê²Œì„ì—ì„œ ì‚¬ìš©í•  ìºë¦­í„°ë¥¼ ì •í•˜ëŠ” ìƒíƒœ
+    Battle,//ê²Œì„ì„ í”Œë ˆì´í•˜ëŠ” ìƒíƒœ(ì´ë•Œì—ë§Œ mPerGameTimerê°€ ì‘ë™í•¨)
+    Waiting,//Waitingìƒíƒœ, í”Œë ˆì´ì–´ì˜ inputì„ ë°›ì§€ì•Šê³  ê²Œì„ìƒíƒœë¥¼ ì²˜ë¦¬í•˜ëŠ” ê³¼ì •(ì ìˆ˜ ì• ë‹ˆë©”ì´ì…˜ì´ë¼ë˜ê°€)
+    SkillSelection,//Skillì„ ê³ ë¥´ëŠ” ìƒíƒœ
+    End//ìŠ¹ë¶€ê°€ ê²°ì •ë˜ì–´ ìµœì¢… í™”ë©´ì„ ë³´ì—¬ì£¼ëŠ” ìƒíƒœ
 }
 
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    [SerializeField] private int mNumMaxGame = 5;//?ÆÇ 
-    [SerializeField] private int mNumToWinGame = 3;//?¼±½ÂÁ¦
-    [SerializeField] private double mPerGamePlayTime = 10.0;//°ÔÀÓ´ç ??ÃÊ
-    [SerializeField] private GameObject mCharacterSelectionUI;//Ä³¸¯ÅÍ ¼±ÅÃUI PrefabÀÇ ·¹ÆÛ·±½º
-    [SerializeField] private GameObject mWaitingUI;//WaitingUI PrefabÀÇ ·¹ÆÛ·±½º
-    [SerializeField] private GameObject mBattleUI;//BattleUI PrefabÀÇ ·¹ÆÛ·±½º
-    [SerializeField] private GameObject mSkillSelectionUI;//SkillSelectionUI PrefabÀÇ ·¹ÆÛ·±½º
-    [SerializeField] private PlatformMaker mPlatformMaker;//PlatformMakerÀÇ ·¹ÆÛ·±½º
-    [SerializeField] private GameObject[] mPlayerPrefabs;//ÇÃ·¹ÀÌ¾î °ÔÀÓ¿ÀºêÁ§Æ® ÇÁ¸®ÆÕ ·¹ÆÛ·±½ºµé
-    [SerializeField] private Vector3 mPlayer1InitPosition;//ÇÃ·¹ÀÌ¾î1 ½ÃÀÛÀ§Ä¡
-    [SerializeField] private Vector3 mPlayer2InitPosition;//ÇÃ·¹ÀÌ¾î2 ½ÃÀÛÀ§Ä¡
-    [SerializeField] private GameObject mStartWall; // ½ÃÀÛÇÒ¶§ »ı¼ºµÇ´Â º® prefabÀÇ ·¹ÆÛ·±½º
-    [SerializeField] private float mWallTime;//º®ÀÌ ³»·Á°¡´Â ½Ã°£
-    [SerializeField] private GameObject mInvisibleWall; // ½ÃÀÛÇÒ¶§ »ı¼ºµÇ´Â Åõ¸íº® prefabÀÇ ·¹ÆÛ·±½º
+    [SerializeField] private int mNumMaxGame = 5;//?íŒ 
+    [SerializeField] private int mNumToWinGame = 3;//?ì„ ìŠ¹ì œ
+    [SerializeField] private double mPerGamePlayTime = 10.0;//ê²Œì„ë‹¹ ??ì´ˆ
+    [SerializeField] private GameObject mStartUI;//ì‹œì‘í™”ë©´ UIë ˆí¼ëŸ°ìŠ¤
+    [SerializeField] private GameObject mCharacterSelectionUI;//ìºë¦­í„° ì„ íƒUI Prefabì˜ ë ˆí¼ëŸ°ìŠ¤
+    [SerializeField] private GameObject mWaitingUI;//WaitingUI Prefabì˜ ë ˆí¼ëŸ°ìŠ¤
+    [SerializeField] private GameObject mBattleUI;//BattleUI Prefabì˜ ë ˆí¼ëŸ°ìŠ¤
+    [SerializeField] private GameObject mSkillSelectionUI;//SkillSelectionUI Prefabì˜ ë ˆí¼ëŸ°ìŠ¤
+    [SerializeField] private GameObject mCooldownUI;// ìŠ¤í‚¬ ì¿¨íƒ€ì„ í‘œì‹œ UI
+    [SerializeField] private GameObject mEndUI;//ì¢…ë£Œí™”ë©´ UIë ˆí¼ëŸ°ìŠ¤
+    [SerializeField] private GameObject mFeverUI;//í”¼ë²„ UIë ˆí¼ëŸ°ìŠ¤
+    [SerializeField] private PlatformMaker mPlatformMaker;//PlatformMakerì˜ ë ˆí¼ëŸ°ìŠ¤
+    [SerializeField] private GameObject[] mPlayerPrefabs;//í”Œë ˆì´ì–´ ê²Œì„ì˜¤ë¸Œì íŠ¸ í”„ë¦¬íŒ¹ ë ˆí¼ëŸ°ìŠ¤ë“¤
+    [SerializeField] private Vector3 mPlayer1InitPosition;//í”Œë ˆì´ì–´1 ì‹œì‘ìœ„ì¹˜
+    [SerializeField] private Vector3 mPlayer2InitPosition;//í”Œë ˆì´ì–´2 ì‹œì‘ìœ„ì¹˜
+    [SerializeField] private GameObject mStartWall; // ì‹œì‘í• ë•Œ ìƒì„±ë˜ëŠ” ë²½ prefabì˜ ë ˆí¼ëŸ°ìŠ¤
+    [SerializeField] private float mWallTime;//ë²½ì´ ë‚´ë ¤ê°€ëŠ” ì‹œê°„
+    [SerializeField] private GameObject mInvisibleWall; // ì‹œì‘í• ë•Œ ìƒì„±ë˜ëŠ” íˆ¬ëª…ë²½ prefabì˜ ë ˆí¼ëŸ°ìŠ¤
+    [SerializeField] private AudioClip mMainBGM;
+    [SerializeField] private AudioClip mFeverBGM;
+    
 
-    private int mPlayer1Score=0;//ÇÃ·¹ÀÌ¾î1 Á¡¼ö
-    private int mPlayer2Score=0;//ÇÃ·¹ÀÌ¾î2 Á¡¼ö
-    private int mNumPlayer1Win = 0;//ÇÃ·¹ÀÌ¾î1 ÀÌ±äÈ½¼ö
-    private int mNumPlayer2Win = 0;//ÇÃ·¹ÀÌ¾î2 ÀÌ±äÈ½¼ö
-    private double mPerGameTimer = 0.0;//°¢ °ÔÀÓ¿¡ »ç¿ëµÇ´Â Å¸ÀÌ¸Ó º¯¼ö(°¢ °ÔÀÓÀÌ ½ÃÀÛµÉ¶§¸¶´Ù mPerGamePlayTimeÀ¸·Î ÃÊ±âÈ­µÊ)
-    private GameState mGameState = GameState.CharacterSelection;//°ÔÀÓÀÇ »óÅÂ
-    private SkillHolder mPlayer1SkillHolder;//ÇÃ·¹ÀÌ¾î1 ½ºÅ³È¦´õ
-    private SkillHolder mPlayer2SkillHolder;//ÇÃ·¹ÀÌ¾î2 ½ºÅ³È¦´õ
+    private int mPlayer1Score=0;//í”Œë ˆì´ì–´1 ì ìˆ˜
+    private int mPlayer2Score=0;//í”Œë ˆì´ì–´2 ì ìˆ˜
+    private int mNumPlayer1Win = 0;//í”Œë ˆì´ì–´1 ì´ê¸´íšŸìˆ˜
+    private int mNumPlayer2Win = 0;//í”Œë ˆì´ì–´2 ì´ê¸´íšŸìˆ˜
+    private double mPerGameTimer = 0.0;//ê° ê²Œì„ì— ì‚¬ìš©ë˜ëŠ” íƒ€ì´ë¨¸ ë³€ìˆ˜(ê° ê²Œì„ì´ ì‹œì‘ë ë•Œë§ˆë‹¤ mPerGamePlayTimeìœ¼ë¡œ ì´ˆê¸°í™”ë¨)
+    private GameState mGameState = GameState.Start;//ê²Œì„ì˜ ìƒíƒœ
+    private SkillHolder mPlayer1SkillHolder;//í”Œë ˆì´ì–´1 ìŠ¤í‚¬í™€ë”
+    private SkillHolder mPlayer2SkillHolder;//í”Œë ˆì´ì–´2 ìŠ¤í‚¬í™€ë”
 
-    public KeyCode mPlayer1ActiveSkillKey; // ÇÃ·¹ÀÌ¾î1 ¾×Æ¼ºê½ºÅ³ Å°
-    public KeyCode mPlayer2ActiveSKillKey; // ÇÃ·¹ÀÌ¾î2 ¾×Æ¼ºê½ºÅ³ Å°
+    public KeyCode mPlayer1ActiveSkillKey; // í”Œë ˆì´ì–´1 ì•¡í‹°ë¸ŒìŠ¤í‚¬ í‚¤
+    public KeyCode mPlayer2ActiveSKillKey; // í”Œë ˆì´ì–´2 ì•¡í‹°ë¸ŒìŠ¤í‚¬ í‚¤
 
     private GameObject player1;
     private GameObject player2;
@@ -52,6 +60,10 @@ public class GameManager : MonoBehaviour
 
     private int mOccupyCount1 = 0;
     private int mOccupyCount2 = 0;
+
+    private AudioSource mAudioSource;
+
+    private bool bFeverAudioPlay;
 
 
     public GameObject GetPlayer(int player)
@@ -137,51 +149,75 @@ public class GameManager : MonoBehaviour
     {
         return mGameState;
     }
-    public bool IsWallTime()//º®ÀÌ Á¸ÀçÇÏ¸é true, ´Ù ³»·Á°¡¸é false
+    public bool IsWallTime()//ë²½ì´ ì¡´ì¬í•˜ë©´ true, ë‹¤ ë‚´ë ¤ê°€ë©´ false
     {
         return mPerGameTimer > mPerGamePlayTime - mWallTime;
     }
-
-    public void CharacterSelectionAgain()//³ª¸ÓÁö ÇÃ·¹ÀÌ¾î ¼±ÅÃ
+    public bool IsGameEnd()//mNumToWinGameë³´ë‹¤ ë§ì´ ìŠ¹ë¦¬í•œ í”Œë ˆì´ì–´ê°€ ìˆëŠ”ê°€?
+    {
+        return mNumPlayer1Win >= mNumToWinGame || mNumPlayer2Win >= mNumToWinGame;
+    }
+    public void CharacterSelectionAgain()//ë‚˜ë¨¸ì§€ í”Œë ˆì´ì–´ ì„ íƒ
     {
         if (mGameState != GameState.CharacterSelection)
         {
-            Debug.LogError("Àß¸øµÈ »óÅÂ¿¡¼­ ½ÇÇà");
+            Debug.LogError("ì˜ëª»ëœ ìƒíƒœì—ì„œ ì‹¤í–‰");
             return;
         }
         mCharacterSelectionUI.SetActive(false);
-        mCharacterSelectionUI.SetActive(true);//²¯´Ù°¡ Å°¸é¼­ OnEnableÇÔ¼ö ½ÇÇà
+        mCharacterSelectionUI.SetActive(true);//ê»ë‹¤ê°€ í‚¤ë©´ì„œ OnEnableí•¨ìˆ˜ ì‹¤í–‰
     }
-    public void ChangeStateCharacterSelectionToBattle(int player1Index,int player2Index)//Character¼±ÅÃ »óÅÂ°¡ ³¡³ª°í Battle»óÅÂ·Î º¯°æÇÏ´Â ÄÚµå
+    public void ChangeStateStartToCharacterSelection()//ì´ˆê¸° UIì—ì„œ ê²Œì„ì‹œì‘ë²„íŠ¼ í´ë¦­ì‹œ ì‹¤í–‰ë˜ëŠ” í•¨ìˆ˜
+    {
+        if (mGameState != GameState.Start)
+        {
+            Debug.LogError("ì˜ëª»ëœ ìƒíƒœë³€ê²½ì‹œë„");
+            return;
+        }
+        mGameState = GameState.CharacterSelection;
+        mStartUI.SetActive(false);
+        mCharacterSelectionUI.SetActive(true);
+        
+    }
+
+
+
+    public void ChangeStateCharacterSelectionToBattle(int player1Index,int player2Index)//Characterì„ íƒ ìƒíƒœê°€ ëë‚˜ê³  Battleìƒíƒœë¡œ ë³€ê²½í•˜ëŠ” ì½”ë“œ
     {
         if (mGameState != GameState.CharacterSelection)
         {
-            Debug.LogError("Àß¸øµÈ »óÅÂº¯°æ½Ãµµ");
+            Debug.LogError("ì˜ëª»ëœ ìƒíƒœë³€ê²½ì‹œë„");
             return;
         }
-        {//ÇÃ·¹ÀÌ¾î1 »ı¼º
+        mCooldownUI.gameObject.SetActive(true);
+
+        {//í”Œë ˆì´ì–´1 ìƒì„±
             player1 = Instantiate(mPlayerPrefabs[player1Index], mPlayer1InitPosition, Quaternion.identity);
             player1.GetComponent<Player>().SetPlayerNumber(1);
             
             player1.transform.Rotate(new Vector3(0, 90, 0));
             player1.tag = "Player1";
-            mPlayer1SkillHolder = player1.GetComponent<SkillHolder>();//½ºÅ³È¦´õ ·¹ÆÛ·±½º °¡Á®¿À±â
-            mPlayer1SkillHolder.mActiveSkillKey = mPlayer1ActiveSkillKey; // ÇÃ·¹ÀÌ¾î1 ½ºÅ³ Å° ÁöÁ¤
-            mPlayer1SkillHolder.animalType = player1Index; // µ¿¹° Å¸ÀÔ ÁöÁ¤
-            player1.transform.GetChild(0).GetChild(0).gameObject.SetActive(true); // 1P text ¶ç¿ì±â
+            mPlayer1SkillHolder = player1.GetComponent<SkillHolder>();//ìŠ¤í‚¬í™€ë” ë ˆí¼ëŸ°ìŠ¤ ê°€ì ¸ì˜¤ê¸°
+            mPlayer1SkillHolder.mActiveSkillKey = mPlayer1ActiveSkillKey; // í”Œë ˆì´ì–´1 ìŠ¤í‚¬ í‚¤ ì§€ì •
+            mPlayer1SkillHolder.animalType = player1Index; // ë™ë¬¼ íƒ€ì… ì§€ì •
+            player1.transform.GetChild(0).GetChild(0).gameObject.SetActive(true); // 1P text ë„ìš°ê¸°
+            mCooldownUI.transform.GetChild(0).GetChild(player1Index).gameObject.SetActive(true); // ì¿¨íƒ€ì„ UI ìºë¦­í„° í‘œì‹œ
+            mPlayer1SkillHolder.mCooldownUI = mCooldownUI.transform.GetChild(0).GetChild(player1Index);
         }
-        {//ÇÃ·¹ÀÌ¾î2 »ı¼º
+        {//í”Œë ˆì´ì–´2 ìƒì„±
             player2 = Instantiate(mPlayerPrefabs[player2Index], mPlayer2InitPosition, Quaternion.identity);
             player2.GetComponent<Player>().SetPlayerNumber(2);
 
             player2.transform.Rotate(new Vector3(0, -90, 0));
             player2.tag = "Player2";
-            mPlayer2SkillHolder = player2.GetComponent<SkillHolder>();//½ºÅ³È¦´õ ·¹ÆÛ·±½º °¡Á®¿À±â
-            mPlayer2SkillHolder.mActiveSkillKey = mPlayer2ActiveSKillKey; // ÇÃ·¹ÀÌ¾î2 ½ºÅ³ Å° ÁöÁ¤
+            mPlayer2SkillHolder = player2.GetComponent<SkillHolder>();//ìŠ¤í‚¬í™€ë” ë ˆí¼ëŸ°ìŠ¤ ê°€ì ¸ì˜¤ê¸°
+            mPlayer2SkillHolder.mActiveSkillKey = mPlayer2ActiveSKillKey; // í”Œë ˆì´ì–´2 ìŠ¤í‚¬ í‚¤ ì§€ì •
             mPlayer2SkillHolder.animalType = player2Index;
-            player2.transform.GetChild(0).GetChild(1).gameObject.SetActive(true); // 2P text ¶ç¿ì±â
+            player2.transform.GetChild(0).GetChild(1).gameObject.SetActive(true); // 2P text ë„ìš°ê¸°
+            mCooldownUI.transform.GetChild(1).GetChild(player2Index).gameObject.SetActive(true); // ì¿¨íƒ€ì„ UI ìºë¦­í„° í‘œì‹œ
+            mPlayer2SkillHolder.mCooldownUI = mCooldownUI.transform.GetChild(1).GetChild(player2Index);
         }
-        {//ÃÊ¹İ º® »ı¼º
+        {//ì´ˆë°˜ ë²½ ìƒì„±
             mStartWall1 = Instantiate(mStartWall, mPlayer1InitPosition, Quaternion.identity);
             mStartWall1.GetComponent<StartWall>().SetWallTime(mWallTime);
             mStartWall2 = Instantiate(mStartWall, mPlayer2InitPosition, Quaternion.identity);
@@ -196,46 +232,67 @@ public class GameManager : MonoBehaviour
         mGameState = GameState.Battle;
     }
 
+    public void ChangeStateBattleToWaiting()//ë°°í‹€ìƒíƒœê°€ ëë‚˜ê³  Waitingìƒíƒœë¡œ ì „í™˜
+    {
+        if (mGameState != GameState.Battle)
+        {
+            Debug.LogError("ì˜ëª»ëœ ìƒíƒœë³€ê²½ì‹œë„");
+            return;
+        }
+        mPerGameTimer = mPerGamePlayTime;//ì‹œê°„ì´ˆê¸°í™”
+        mGameState = GameState.Waiting;//Waitingìƒíƒœë¡œ ë³€ê²½
+        JudgeWinner();//ìŠ¹ì íŒì •(ìŠ¹ìì˜ ìŠ¹count 1ëŠ˜ë¦¬ê¸°)
+        mBattleUI.SetActive(false);
+        mWaitingUI.SetActive(true);
+        {//ì–‘ í”Œë ˆì´ì–´ì˜ íŒ¨ì‹œë¸Œ ìŠ¤í‚¬ë¡œ ì¸í•´ ìƒê²¨ë‚œ ë¶€ì‚°ë¬¼ ì‚­ì œ
+            mPlayer1SkillHolder.DestroyPassiveObject();
+            mPlayer2SkillHolder.DestroyPassiveObject();
+        }
 
 
-    public void ChangeStateWaitingToSkillSelection()//waiting»óÅÂ°¡ ³¡³ª°í SkillSelectionÀ¸·Î »óÅÂ¸¦ º¯°æÇÏ´Â ÄÚµå
+    }
+
+    public void ChangeStateWaitingToSkillSelection()//waitingìƒíƒœê°€ ëë‚˜ê³  SkillSelectionìœ¼ë¡œ ìƒíƒœë¥¼ ë³€ê²½í•˜ëŠ” ì½”ë“œ
     {
         if (mGameState != GameState.Waiting)
         {
-            Debug.LogError("Àß¸øµÈ »óÅÂº¯°æ½Ãµµ");
+            Debug.LogError("ì˜ëª»ëœ ìƒíƒœë³€ê²½ì‹œë„");
             return;
         }
         mGameState = GameState.SkillSelection;
         mSkillSelectionUI.SetActive(true);
         mWaitingUI.SetActive(false);
     }
-    public void SkillSelectionAgain()//¹«½ÂºÎÀÎ °æ¿ì ´Ù½Ã ½ºÅ³¼±ÅÃ ÁøÇà
+    public void ChangeStateWaitingToEnd()//waitingìƒíƒœê°€ ëë‚˜ê³  Endë¡œ ìƒíƒœë¥¼ ë³€ê²½í•˜ëŠ” ì½”ë“œ
+    {
+        if (mGameState != GameState.Waiting)
+        {
+            Debug.LogError("ì˜ëª»ëœ ìƒíƒœë³€ê²½ì‹œë„");
+            return;
+        }
+        mGameState = GameState.End;
+        mEndUI.SetActive(true);
+        mWaitingUI.SetActive(false);
+    }
+
+    public void SkillSelectionAgain()//ë¬´ìŠ¹ë¶€ì¸ ê²½ìš° ë‹¤ì‹œ ìŠ¤í‚¬ì„ íƒ ì§„í–‰
     {
         if (mGameState != GameState.SkillSelection)
         {
-            Debug.LogError("Àß¸øµÈ »óÅÂ¿¡¼­ ½ÇÇà");
+            Debug.LogError("ì˜ëª»ëœ ìƒíƒœì—ì„œ ì‹¤í–‰");
             return;
         }
         mSkillSelectionUI.SetActive(false);
-        mSkillSelectionUI.SetActive(true);//²¯´Ù°¡ Å°¸é¼­ OnEnableÇÔ¼ö ½ÇÇà
+        mSkillSelectionUI.SetActive(true);//ê»ë‹¤ê°€ í‚¤ë©´ì„œ OnEnableí•¨ìˆ˜ ì‹¤í–‰
     }
-    public void ChangeStateSkillSelectionToBattle()//½ºÅ³¼±ÅÃ »óÅÂ°¡ ³¡³ª°í Battle»óÅÂ·Î »óÅÂ¸¦ º¯°æÇÏ´Â ÄÚµå
+    public void ChangeStateSkillSelectionToBattle()//ìŠ¤í‚¬ì„ íƒ ìƒíƒœê°€ ëë‚˜ê³  Battleìƒíƒœë¡œ ìƒíƒœë¥¼ ë³€ê²½í•˜ëŠ” ì½”ë“œ
     {
         if (mGameState != GameState.SkillSelection)
         {
-            Debug.LogError("Àß¸øµÈ »óÅÂº¯°æ½Ãµµ");
+            Debug.LogError("ì˜ëª»ëœ ìƒíƒœë³€ê²½ì‹œë„");
             return;
         }
         mGameState = GameState.Battle;
-        mPlatformMaker.ClearAllBoard();
-        ResetTimer();
-        ResetScore();
-        mBattleUI.SetActive(true);
-        mSkillSelectionUI.SetActive(false);
-        {//¾ç ÇÃ·¹ÀÌ¾îÀÇ ÆĞ½Ãºê ½ºÅ³ Àû¿ë
-            mPlayer1SkillHolder.PassiveAdjust();
-            mPlayer2SkillHolder.PassiveAdjust();
-        }
         player1.transform.position = mPlayer1InitPosition;
         player2.transform.position = mPlayer2InitPosition;
         player1.transform.Rotate(new Vector3(0, 90, 0));
@@ -250,26 +307,33 @@ public class GameManager : MonoBehaviour
             mInvisibleWall2 = Instantiate(mInvisibleWall, mPlayer2InitPosition, Quaternion.identity);
             mInvisibleWall2.GetComponent<InvisibleWall>().SetWallTime(mWallTime);
         }
+        mPlatformMaker.ClearAllBoard();
+        ResetTimer();
+        ResetScore();
+        mBattleUI.SetActive(true);
+        mSkillSelectionUI.SetActive(false);
+        {//ì–‘ í”Œë ˆì´ì–´ì˜ íŒ¨ì‹œë¸Œ ìŠ¤í‚¬ ì ìš©
+            mPlayer1SkillHolder.PassiveAdjust();
+            mPlayer2SkillHolder.PassiveAdjust();
+        }
+        mPlatformMaker.ClearAllBoard();
+
+        mAudioSource.Stop();
+        mAudioSource.clip = mMainBGM;
+        mAudioSource.Play();
     }
-    public void ChangeStateBattleToWaiting()//¹èÆ²»óÅÂ°¡ ³¡³ª°í Waiting»óÅÂ·Î ÀüÈ¯
+    public void ChangeStateEndToStart()//ë§ˆë¬´ë¦¬ UIì—ì„œ ì‹œì‘í™”ë©´ ë²„íŠ¼ ëˆŒë €ì„ë•Œ ì‹¤í–‰ë˜ëŠ” í•¨ìˆ˜
     {
-        if (mGameState != GameState.Battle)
+        if (mGameState != GameState.End)
         {
-            Debug.LogError("Àß¸øµÈ »óÅÂº¯°æ½Ãµµ");
+            Debug.LogError("ì˜ëª»ëœ ìƒíƒœë³€ê²½ì‹œë„");
             return;
         }
-        mPerGameTimer = mPerGamePlayTime;//½Ã°£ÃÊ±âÈ­
-        mGameState = GameState.Waiting;//Waiting»óÅÂ·Î º¯°æ
-        JudgeWinner();//½ÂÀÚ ÆÇÁ¤(½ÂÀÚÀÇ ½Âcount 1´Ã¸®±â)
-        mBattleUI.SetActive(false);
-        mWaitingUI.SetActive(true);
-        {//¾ç ÇÃ·¹ÀÌ¾îÀÇ ÆĞ½Ãºê ½ºÅ³·Î ÀÎÇØ »ı°Ü³­ ºÎ»ê¹° »èÁ¦
-            mPlayer1SkillHolder.DestroyPassiveObject();
-            mPlayer2SkillHolder.DestroyPassiveObject();
-        }
-
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
     }
+
+
     public void AddPassiveSkillToPlayer(SelectingPlayer passiveSkillOwner, PassiveSkill passiveSkill)
     {
         switch (passiveSkillOwner)
@@ -294,15 +358,19 @@ public class GameManager : MonoBehaviour
         mCharacterSelectionUI.GetComponent<CharacterSelectionUI>().SetPlayerKeyCode(
             mPlayer1ActiveSkillKey,
             mPlayer2ActiveSKillKey
-        );//Ä³¸¯ÅÍ ¼±ÅÃÅ°=¾×Æ¼ºê¼±ÅÃÅ° µ¿±âÈ­ÀÛ¾÷
+        );//ìºë¦­í„° ì„ íƒí‚¤=ì•¡í‹°ë¸Œì„ íƒí‚¤ ë™ê¸°í™”ì‘ì—…
         mSkillSelectionUI.GetComponent<SkillSelectionUI>().SetPlayerKeyCode(
             mPlayer1ActiveSkillKey,
             mPlayer2ActiveSKillKey
-        );//½ºÅ³ ¼±ÅÃÅ°=¾×Æ¼ºê¼±ÅÃÅ° µ¿±âÈ­ÀÛ¾÷
+        );//ìŠ¤í‚¬ ì„ íƒí‚¤=ì•¡í‹°ë¸Œì„ íƒí‚¤ ë™ê¸°í™”ì‘ì—…
+
+        mAudioSource = GetComponent<AudioSource>();
+        mAudioSource.clip = mMainBGM;
+        mAudioSource.Play();
     }
     private void StartFiniteStateMachine()
     {
-        mCharacterSelectionUI.SetActive(true);//Ä³¸¯ÅÍ¼±ÅÃ UI¸¦ È°¼ºÈ­ÇÏ¸ç »óÅÂ¸Ó½Å ½ÃÀÛ
+        mStartUI.SetActive(true);//ì‹œì‘ UIë¥¼ í™œì„±í™”í•˜ë©° ìƒíƒœë¨¸ì‹  ì‹œì‘
     }
     private void Update()
     {
@@ -311,7 +379,25 @@ public class GameManager : MonoBehaviour
             mPerGameTimer -= Time.deltaTime;
             FinishCheckPerEachGame();
         }
+
+        if (mAudioSource.clip.name == mMainBGM.name && mPerGameTimer <= 15) // 15ì´ˆ ì´í•˜(í”¼ë²„íƒ€ì„)
+        {
+            mAudioSource.Stop();
+            mAudioSource.clip = mFeverBGM;
+            mAudioSource.Play();
+        }
+
+
+        if(mPerGameTimer <= 15 && mPerGameTimer >= 13)
+        {
+            mFeverUI.SetActive(true);
+        }
+        else
+        {
+            mFeverUI.SetActive(false);
+        }
     }
+
     private void ResetTimer()
     {
         mPerGameTimer = mPerGamePlayTime;
@@ -332,15 +418,15 @@ public class GameManager : MonoBehaviour
     }
     private void JudgeWinner()
     {
-        if (mPlayer1Score > mPlayer2Score)//player1¿ì¼¼
+        if (mPlayer1Score > mPlayer2Score)//player1ìš°ì„¸
         {
             mNumPlayer1Win++;
         }
-        else if (mPlayer2Score > mPlayer1Score)//player2¿ì¼¼
+        else if (mPlayer2Score > mPlayer1Score)//player2ìš°ì„¸
         {
             mNumPlayer2Win++;
         }
-        else//µ¿Á¡
+        else//ë™ì 
         {
             mNumPlayer1Win++;
             mNumPlayer2Win++;
