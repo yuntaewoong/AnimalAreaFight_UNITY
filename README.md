@@ -13,6 +13,8 @@
 - 개발기간: 22'10'01 ~ 22'11'22
 - 개발도구: Unity(2021.3.11f1) + C#
 - 협업도구: Perforce + (AWS EC2서버)
+- [Youtube](https://www.youtube.com/watch?v=SeQTM0eJTxo)
+
 
 # Install
 1. `git clone https://github.com/yuntaewoong/AnimalAreaFight_UNITY.git`명령어로 프로젝트 clone
